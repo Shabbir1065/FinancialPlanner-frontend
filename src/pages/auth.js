@@ -56,8 +56,13 @@ const Register = () => {
     const onSubmit = async (event) => {
         event.preventDefault();
         try{
-            await axios.post("http://localhost:3001/auth/register", {username, password});
-            alert("Registration completed! You may now login");
+            const response = await axios.post("http://localhost:3001/auth/register", {username, password});
+            if(response.data.message == "User registered successfully"){
+                alert("Registration completed! You may now login");
+            }
+            else{
+                alert("This username is taken. Please try a different username.")
+            }
         } catch (err){
             console.error(err);
         }
