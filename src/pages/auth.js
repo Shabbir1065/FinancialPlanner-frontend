@@ -32,7 +32,7 @@ const Login = () => {
                 alert("Login Successful!");
             }
             else{
-                alert("You were not logged in.")
+                alert("Username or password is invalid.")
             }
             
         } catch (err){
