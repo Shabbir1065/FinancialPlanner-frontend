@@ -46,3 +46,28 @@ button{
   border-radius: 0.5rem;
   outline:none;
 }
+
+header{
+  position:fixed;
+  width:100%;
+  top:0;
+  /* right:0; */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #cdffc0;
+  padding: 0.05% 10%;
+  transition: 0.2s;
+  box-shadow: -3px -3px 7px #ffffff73, 2px 2px 5px rgba(94,104,121,0.288);
+}
+
+.logo{
+  margin-left: 1%;
+}
+
+.logout{
+  display:flex;
+  align-items: center;
+  margin-right: 1%;
+}
