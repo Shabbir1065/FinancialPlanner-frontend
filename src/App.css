@@ -39,10 +39,10 @@ body {
 }
 
 button{
-    display: inline-block;
-    background: #4070F4;
-    color: #fff;
-    padding: 0.7rem 1rem;
-    border-radius: 0.5rem;
-    outline:none;
+  display: inline-block;
+  background: #4070F4;
+  color: #fff;
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  outline:none;
 }
