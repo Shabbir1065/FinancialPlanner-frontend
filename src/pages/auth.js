@@ -85,14 +85,14 @@ const Form = ({username, setUsername, password, setPassword, label, onSubmit}) =
                 <div className="form-group">
                     <label htmlFor="username"> Username: </label>
                     <input type="text" 
-                    className="username"
+                    id="username"
                     value = {username}
                     onChange={(event => setUsername(event.target.value))}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password"> Password: </label>
                     <input type="password" 
-                    className="password"
+                    id="password"
                     value = {password}
                     onChange={(event => setPassword(event.target.value))}/>
                 </div>

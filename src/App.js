@@ -7,12 +7,10 @@ import PrivateRoutes from './utils/PrivateRoutes'
 
 function App() {
   
-  
-  
   return (
     <div className="App">
       <Router>
-        <Navbar/>
+        <Navbar className="navBar"/>
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<Home/>}/>

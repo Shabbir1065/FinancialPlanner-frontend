@@ -14,7 +14,7 @@ export const Navbar = () => {
     
     return (
         <header>
-            <h3 class="logo">Financial Planner App</h3>
+            <h3 className="logo">Financial Planner App</h3>
             <div className="logout">
                 {!cookies.access_token ? (<Link to="/"></Link>) : (<button onClick={logout}> Logout </button>)}
             </div>

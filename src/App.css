@@ -44,20 +44,17 @@ button{
   color: #fff;
   padding: 0.7rem 1rem;
   border-radius: 0.5rem;
-  outline:none;
 }
 
+/*--------------------Home Page's Navbar and User Input--------------------*/
 header{
-  position:fixed;
+  /* position:fixed; */
   width:100%;
-  top:0;
-  /* right:0; */
-  z-index: 1000;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #cdffc0;
-  padding: 0.05% 10%;
   transition: 0.2s;
   box-shadow: -3px -3px 7px #ffffff73, 2px 2px 5px rgba(94,104,121,0.288);
 }
@@ -67,7 +64,72 @@ header{
 }
 
 .logout{
-  display:flex;
-  align-items: center;
   margin-right: 1%;
+}
+
+.userInputForm{
+  text-align: center;
+  margin-bottom: 0.5%;
+}
+
+.input-field {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+select {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0 5px;
+  padding: 5px;
+  vertical-align: middle;
+}
+
+.addToPlanner {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0 5px;
+  padding: 10px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/*--------------------Home Page Financial Information Display--------------------*/
+
+.financeSummary{
+  /* outline-color: black;
+  outline-style: auto; */
+  width: 100vw;
+  display: flex;
+  text-align: center;
+}
+
+.finance-section{
+  width: 25%;
+}
+
+.incomes{
+  background: #cdffc0;
+}
+
+.expenses{
+  background: rgb(255, 126, 126);
+}
+
+.investments{
+  background: rgb(130, 130, 255);
+}
+
+.breakdown{
+  background: rgb(194, 194, 194);
+}
+
+
+/*--------------------Making the page a little responsive--------------------*/
+@media screen and (max-width: 600px) {
+  .finance-section {
+    width: 100%;
+  }
 }
