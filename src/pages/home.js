@@ -10,26 +10,32 @@ export const Home = () => {
 
     useEffect(() => {
         const userID = window.localStorage.getItem("userID");
-        const fetchIncomes = async () => {
+        const fetchFinances = async () => {
             try{
                 //section for incomes
-                const incomeResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`);
-                setIncomes(incomeResponse.data);
+                await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
+                .then((response) => {
+                    setIncomes(response.data);
+                });
 
                 //section for expenses
-                const expenseResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`);
-                setExpenses(expenseResponse.data);
+                await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
+                .then((response) => {
+                    setExpenses(response.data);
+                });
 
                 //section for investments
-                const investmentResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`);
-                setInvestments(investmentResponse.data);
+                await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
+                .then((response) => {
+                    setInvestments(response.data);
+                })
             }
             catch(err){
                 console.error(err);
             }
         };
         
-        fetchIncomes();
+        fetchFinances();
     }, []);
 
     return (
@@ -117,27 +123,62 @@ const FinanceSummary = ({incomes, expenses, investments, setIncomes, setExpenses
 
     const deleteItem = async (financeID) => {
         try{
-            console.log(userID);
-            console.log(financeID);
-            const response = await axios.delete("http://localhost:3001/api/deleteFinance", {data: {userID, financeID}});
-            console.log(response.data);
-            //---------RE-RENDER STUFF--------
+            await axios.delete("http://localhost:3001/api/deleteFinance", {data: {userID, financeID}});
+
+            //---------RE-RENDER THE PAGE---------
             //section for incomes
-            const incomeResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`);
-            setIncomes(incomeResponse.data);
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
+            .then((response) => {
+                setIncomes(response.data);
+            });
 
             //section for expenses
-            const expenseResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`);
-            setExpenses(expenseResponse.data);
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
+            .then((response) => {
+                setExpenses(response.data);
+            });
 
             //section for investments
-            const investmentResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`);
-            setInvestments(investmentResponse.data);
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
+            .then((response) => {
+                setInvestments(response.data);
+            })
+
         }
         catch(err){
             console.error(err);
         }
     };
+
+    const updateItem = async (financeID) => {
+        try{
+            const newDescription = prompt("Enter new description: ");
+            const newValue = prompt("Enter new value: ")
+            await axios.put("http://localhost:3001/api/updateFinance", {userID,financeID, "description": newDescription, "value": newValue});
+
+            //---------RE-RENDER THE PAGE---------
+            //section for incomes
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
+            .then((response) => {
+                setIncomes(response.data);
+            });
+
+            //section for expenses
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
+            .then((response) => {
+                setExpenses(response.data);
+            });
+
+            //section for investments
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
+            .then((response) => {
+                setInvestments(response.data);
+            })
+        }
+        catch(err){
+            console.error(err);
+        }
+    }
 
     return(
         <div className="financeSummary">
@@ -147,7 +188,7 @@ const FinanceSummary = ({incomes, expenses, investments, setIncomes, setExpenses
                     {incomes.map((income) => (
                         <div className="finance-single-item" key={income._id}>
                             <h4>${income.value} from {income.description}</h4>
-                            <button className="updateButton">Update</button>
+                            <button className="updateButton" onClick={() => updateItem(income._id)}>Edit</button>
                             <button className="deleteButton" onClick={() => deleteItem(income._id)}>Delete</button>
                         </div>
                     ))}
@@ -159,7 +200,7 @@ const FinanceSummary = ({incomes, expenses, investments, setIncomes, setExpenses
                     {expenses.map((expense) => (
                         <div className="finance-single-item" key={expense._id}>
                             <h4>${expense.value} from {expense.description}</h4>
-                            <button className="updateButton">Update</button>
+                            <button className="updateButton" onClick={() => updateItem(expense._id)}>Edit</button>
                             <button className="deleteButton" onClick={() => deleteItem(expense._id)}>Delete</button>
                         </div>
                     ))}
@@ -171,7 +212,7 @@ const FinanceSummary = ({incomes, expenses, investments, setIncomes, setExpenses
                     {investments.map((investment) => (
                         <div className="finance-single-item" key={investment._id}>
                             <h4>${investment.value} from {investment.description}</h4>
-                            <button className="updateButton">Update</button>
+                            <button className="updateButton" onClick={() => updateItem(investment._id)}>Edit</button>
                             <button className="deleteButton" onClick={() => deleteItem(investment._id)}>Delete</button>
                         </div>
                     ))}
