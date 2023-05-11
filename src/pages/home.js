@@ -92,28 +92,30 @@ const UserInput = ({refreshPage}) => {
     return(
         <div className="userInput">
             <form onSubmit={onSubmit} className="userInputForm">
-                <div className="input-field">
-                    <input type="text" 
-                    placeholder="Description"
-                    id="description"
-                    value = {description}
-                    onChange={(event => setDescription(event.target.value))}/>
+                <div className="input-container">
+                    <div className="input-field">
+                        <input type="text" 
+                        placeholder="Description"
+                        id="description"
+                        value = {description}
+                        onChange={(event => setDescription(event.target.value))}/>
+                    </div>
+                    <div className="input-field">
+                        <input type="number" 
+                        placeholder="value"
+                        id="value"
+                        value = {value}
+                        onChange={(event => setValue(event.target.value))}/>
+                    </div>
+                    <div className="input-field">
+                        <select id="financeType" value = {financeType} onChange={(event => setFinanceType(event.target.value))}>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                            <option value="investment">Investment</option>
+                        </select>
+                    </div>
+                    <button type="submit" className="addToPlanner">Add to planner</button>
                 </div>
-                <div className="input-field">
-                    <input type="number" 
-                    placeholder="value"
-                    id="value"
-                    value = {value}
-                    onChange={(event => setValue(event.target.value))}/>
-                </div>
-                <div className="input-field">
-                    <select id="financeType" value = {financeType} onChange={(event => setFinanceType(event.target.value))}>
-                        <option value="income">Income</option>
-                        <option value="expense">Expense</option>
-                        <option value="investment">Investment</option>
-                    </select>
-                </div>
-                <button type="submit" className="addToPlanner">Add to planner</button>
             </form>
         </div>
     );
@@ -195,7 +197,7 @@ const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTot
             </div>
             <div className="breakdown finance-section">
                 <h3>Breakdown:</h3>
-                <h4>Total Incomes - (Total Expenses + Total Investments)</h4>
+                <h4>Remaining Income = Total Incomes - (Total Expenses + Total Investments)</h4>
                 <h2>= ${breakdownTotal}</h2>
             </div>
 
