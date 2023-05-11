@@ -6,6 +6,8 @@ export const Home = () => {
     const [expenses, setExpenses] = useState([]);
     const [investments, setInvestments] = useState([]);
 
+    const username = window.localStorage.getItem("username");
+
     useEffect(() => {
         const userID = window.localStorage.getItem("userID");
         const fetchIncomes = async () => {
@@ -32,7 +34,8 @@ export const Home = () => {
 
     return (
     <div>
-        <h2 className="welcomeUser">Enter your incomes, expenses, and investments:</h2>
+        <h2 className="welcomeUser"> Welcome {username}!</h2>
+        <h2 className="welcomeUser">Please enter your incomes, expenses, and investments:</h2>
         <UserInput
         setIncomes={setIncomes}
         setExpenses={setExpenses}

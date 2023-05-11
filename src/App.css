@@ -9,6 +9,7 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: #f2f2f2;
 }
 
 .auth {
@@ -16,7 +17,6 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f2f2f2;
 }
 
 .auth-container {
@@ -24,7 +24,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 50px;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -53,7 +53,7 @@ header{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #cdffc0;
+  background: #38aee0;
   transition: 0.2s;
   box-shadow: -3px -3px 7px #ffffff73, 2px 2px 5px rgba(94,104,121,0.288);
 }
@@ -67,7 +67,8 @@ header{
 }
 
 .welcomeUser{
-  margin-left: 1%;
+  margin: 1% 1% 0.5%;
+  /* outline:auto; */
 }
 
 .userInputForm{
