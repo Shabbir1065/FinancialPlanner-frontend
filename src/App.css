@@ -139,6 +139,10 @@ select {
   grid-column: 3;
 }
 
+.totals{
+  margin: 0 1%;
+}
+
 .incomes{
   background: #cdffc0;
 }
