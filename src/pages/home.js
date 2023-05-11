@@ -10,31 +10,13 @@ export const Home = () => {
     const [investmentTotal, setInvestmentTotal] = useState();
 
     const username = window.localStorage.getItem("username");
+    const userID = window.localStorage.getItem("userID");
 
     useEffect(() => {
-        const userID = window.localStorage.getItem("userID");
+        
         const fetchFinances = async () => {
             try{
-                //section for incomes
-                await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
-                .then((response) => {
-                    setIncomes(response.data);
-                    setIncomeTotal(response.data.reduce((n, {value}) => n + value, 0));
-                });
-
-                //section for expenses
-                await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
-                .then((response) => {
-                    setExpenses(response.data);
-                    setExpenseTotal(response.data.reduce((n, {value}) => n + value, 0));
-                });
-
-                //section for investments
-                await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
-                .then((response) => {
-                    setInvestments(response.data);
-                    setInvestmentTotal(response.data.reduce((n, {value}) => n + value, 0));
-                })
+                refreshPage();
             }
             catch(err){
                 console.error(err);
@@ -43,6 +25,29 @@ export const Home = () => {
         
         fetchFinances();
     }, []);
+
+    const refreshPage = async () => {
+        //section for incomes
+        await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
+        .then((response) => {
+            setIncomes(response.data);
+            setIncomeTotal(response.data.reduce((n, {value}) => n + value, 0));
+        });
+
+        //section for expenses
+        await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
+        .then((response) => {
+            setExpenses(response.data);
+            setExpenseTotal(response.data.reduce((n, {value}) => n + value, 0));
+        });
+
+        //section for investments
+        await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
+        .then((response) => {
+            setInvestments(response.data);
+            setInvestmentTotal(response.data.reduce((n, {value}) => n + value, 0));
+        })
+    }
 
     return (
     <div>
@@ -55,6 +60,7 @@ export const Home = () => {
         setIncomeTotal={setIncomeTotal}
         setExpenseTotal={setExpenseTotal}
         setInvestmentTotal={setInvestmentTotal}
+        refreshPage = {refreshPage}
         />
         <FinanceSummary
         incomes={incomes}
@@ -69,12 +75,13 @@ export const Home = () => {
         setIncomeTotal={setIncomeTotal}
         setExpenseTotal={setExpenseTotal}
         setInvestmentTotal={setInvestmentTotal}
+        refreshPage = {refreshPage}
         />
     </div>
     );
 }
 
-const UserInput = ({setIncomes, setExpenses, setInvestments, setIncomeTotal, setExpenseTotal, setInvestmentTotal}) => {
+const UserInput = ({setIncomes, setExpenses, setInvestments, setIncomeTotal, setExpenseTotal, setInvestmentTotal, refreshPage}) => {
     const [description, setDescription] = useState("");
     const [value, setValue] = useState("");
     const [financeType, setFinanceType] = useState("income");
@@ -86,26 +93,7 @@ const UserInput = ({setIncomes, setExpenses, setInvestments, setIncomeTotal, set
         try{
             await axios.post("http://localhost:3001/api", {userID, "finances": [{description, value, financeType}]});
             //---------RE-RENDER STUFF--------
-            //section for incomes
-            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
-            .then((response) => {
-                setIncomes(response.data);
-                setIncomeTotal(response.data.reduce((n, {value}) => n + value, 0));
-            });
-
-            //section for expenses
-            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
-            .then((response) => {
-                setExpenses(response.data);
-                setExpenseTotal(response.data.reduce((n, {value}) => n + value, 0));
-            });
-
-            //section for investments
-            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
-            .then((response) => {
-                setInvestments(response.data);
-                setInvestmentTotal(response.data.reduce((n, {value}) => n + value, 0));
-            })
+            refreshPage();
             
         } catch (err){
             console.error(err);
@@ -142,33 +130,13 @@ const UserInput = ({setIncomes, setExpenses, setInvestments, setIncomeTotal, set
     );
 }
 
-const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTotal, investmentTotal, setIncomes, setExpenses, setInvestments, setIncomeTotal, setExpenseTotal, setInvestmentTotal}) => {
+const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTotal, investmentTotal, setIncomes, setExpenses, setInvestments, setIncomeTotal, setExpenseTotal, setInvestmentTotal, refreshPage}) => {
     const userID = window.localStorage.getItem("userID");
 
     const deleteItem = async (financeID) => {
         try{
             await axios.delete("http://localhost:3001/api/deleteFinance", {data: {userID, financeID}});
-
-            //section for incomes
-            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
-            .then((response) => {
-                setIncomes(response.data);
-                setIncomeTotal(response.data.reduce((n, {value}) => n + value, 0));
-            });
-
-            //section for expenses
-            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
-            .then((response) => {
-                setExpenses(response.data);
-                setExpenseTotal(response.data.reduce((n, {value}) => n + value, 0));
-            });
-
-            //section for investments
-            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
-            .then((response) => {
-                setInvestments(response.data);
-                setInvestmentTotal(response.data.reduce((n, {value}) => n + value, 0));
-            })
+            refreshPage();
 
         }
         catch(err){
@@ -182,26 +150,7 @@ const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTot
             const newValue = prompt("Enter new value: ")
             await axios.put("http://localhost:3001/api/updateFinance", {userID,financeID, "description": newDescription, "value": newValue});
 
-           //section for incomes
-           await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
-           .then((response) => {
-               setIncomes(response.data);
-               setIncomeTotal(response.data.reduce((n, {value}) => n + value, 0));
-           });
-
-           //section for expenses
-           await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
-           .then((response) => {
-               setExpenses(response.data);
-               setExpenseTotal(response.data.reduce((n, {value}) => n + value, 0));
-           });
-
-           //section for investments
-           await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
-           .then((response) => {
-               setInvestments(response.data);
-               setInvestmentTotal(response.data.reduce((n, {value}) => n + value, 0));
-           })
+           refreshPage();
         }
         catch(err){
             console.error(err);
