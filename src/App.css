@@ -39,10 +39,9 @@ body {
 }
 
 button{
-  display: inline-block;
   background: #4070F4;
   color: #fff;
-  padding: 0.7rem 1rem;
+  padding: 0.7rem 1rem !important;
   border-radius: 0.5rem;
 }
 
@@ -65,6 +64,10 @@ header{
 
 .logout{
   margin-right: 1%;
+}
+
+.welcomeUser{
+  margin-left: 1%;
 }
 
 .userInputForm{
@@ -107,6 +110,32 @@ select {
 
 .finance-section{
   width: 25%;
+}
+
+.finance-ul-items{
+  text-align: left;
+}
+
+.finance-single-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  margin: 0 1%;
+}
+
+.finance-single-item h4 {
+  grid-column: 1;
+}
+
+.finance-single-item button.updateButton {
+  background: green;
+  grid-column: 2;
+  margin-right: 5px;
+}
+
+.finance-single-item button.deleteButton {
+  background: red;
+  grid-column: 3;
 }
 
 .incomes{
