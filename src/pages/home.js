@@ -13,20 +13,6 @@ export const Home = () => {
     const username = window.localStorage.getItem("username");
     const userID = window.localStorage.getItem("userID");
 
-    useEffect(() => {
-        
-        const fetchFinances = async () => {
-            try{
-                refreshPage();
-            }
-            catch(err){
-                console.error(err);
-            }
-        };
-        
-        fetchFinances();
-    }, []);
-
     const refreshPage = async () => {
         //section for incomes
         const incomeResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`);
@@ -48,6 +34,20 @@ export const Home = () => {
 
         setBreakdownTotal(newIncomeTotal-(newExpenseTotal+newInvestmentTotal));
     }
+
+    useEffect(() => {
+        
+        const fetchFinances = async () => {
+            try{
+                refreshPage();
+            }
+            catch(err){
+                console.error(err);
+            }
+        };
+        
+        fetchFinances();
+    }, []);
 
     return (
     <div>
@@ -159,7 +159,7 @@ const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTot
                         </div>
                     ))}
                     <div className="totals">
-                        <h4>Total Income: {incomeTotal}</h4>
+                        <h4>Total Income: ${incomeTotal}</h4>
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@ const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTot
                         </div>
                     ))}
                     <div className="totals">
-                        <h4>Total Expenses: {expenseTotal}</h4>
+                        <h4>Total Expenses: ${expenseTotal}</h4>
                     </div>
                 </div>
             </div>
@@ -189,14 +189,14 @@ const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTot
                         </div>
                     ))}
                     <div className="totals">
-                        <h4>Total Investments: {investmentTotal}</h4>
+                        <h4>Total Investments: ${investmentTotal}</h4>
                     </div>
                 </div>
             </div>
             <div className="breakdown finance-section">
                 <h3>Breakdown:</h3>
                 <h4>Total Incomes - (Total Expenses + Total Investments)</h4>
-                <h2>= {breakdownTotal}</h2>
+                <h2>= ${breakdownTotal}</h2>
             </div>
 
         </div>
