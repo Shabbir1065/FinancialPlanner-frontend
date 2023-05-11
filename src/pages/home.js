@@ -52,6 +52,9 @@ export const Home = () => {
         setIncomes={setIncomes}
         setExpenses={setExpenses}
         setInvestments={setInvestments}
+        setIncomeTotal={setIncomeTotal}
+        setExpenseTotal={setExpenseTotal}
+        setInvestmentTotal={setInvestmentTotal}
         />
         <FinanceSummary
         incomes={incomes}
@@ -71,7 +74,7 @@ export const Home = () => {
     );
 }
 
-const UserInput = ({setIncomes, setExpenses, setInvestments}) => {
+const UserInput = ({setIncomes, setExpenses, setInvestments, setIncomeTotal, setExpenseTotal, setInvestmentTotal}) => {
     const [description, setDescription] = useState("");
     const [value, setValue] = useState("");
     const [financeType, setFinanceType] = useState("income");
@@ -84,16 +87,25 @@ const UserInput = ({setIncomes, setExpenses, setInvestments}) => {
             await axios.post("http://localhost:3001/api", {userID, "finances": [{description, value, financeType}]});
             //---------RE-RENDER STUFF--------
             //section for incomes
-            const incomeResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`);
-            setIncomes(incomeResponse.data);
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
+            .then((response) => {
+                setIncomes(response.data);
+                setIncomeTotal(response.data.reduce((n, {value}) => n + value, 0));
+            });
 
             //section for expenses
-            const expenseResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`);
-            setExpenses(expenseResponse.data);
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
+            .then((response) => {
+                setExpenses(response.data);
+                setExpenseTotal(response.data.reduce((n, {value}) => n + value, 0));
+            });
 
             //section for investments
-            const investmentResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`);
-            setInvestments(investmentResponse.data);
+            await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
+            .then((response) => {
+                setInvestments(response.data);
+                setInvestmentTotal(response.data.reduce((n, {value}) => n + value, 0));
+            })
             
         } catch (err){
             console.error(err);
