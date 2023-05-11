@@ -8,6 +8,7 @@ export const Home = () => {
     const [incomeTotal, setIncomeTotal] = useState();
     const [expenseTotal, setExpenseTotal] = useState();
     const [investmentTotal, setInvestmentTotal] = useState();
+    const [breakdownTotal, setBreakdownTotal] = useState();
 
     const username = window.localStorage.getItem("username");
     const userID = window.localStorage.getItem("userID");
@@ -28,25 +29,24 @@ export const Home = () => {
 
     const refreshPage = async () => {
         //section for incomes
-        await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`)
-        .then((response) => {
-            setIncomes(response.data);
-            setIncomeTotal(response.data.reduce((n, {value}) => n + value, 0));
-        });
+        const incomeResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`);
+        setIncomes(incomeResponse.data);
+        const newIncomeTotal = incomeResponse.data.reduce((n, {value}) => n + value, 0);
+        setIncomeTotal(newIncomeTotal);
 
         //section for expenses
-        await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`)
-        .then((response) => {
-            setExpenses(response.data);
-            setExpenseTotal(response.data.reduce((n, {value}) => n + value, 0));
-        });
+        const expenseResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`);
+        setExpenses(expenseResponse.data);
+        const newExpenseTotal = expenseResponse.data.reduce((n, {value}) => n + value, 0);
+        setExpenseTotal(newExpenseTotal);
 
         //section for investments
-        await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`)
-        .then((response) => {
-            setInvestments(response.data);
-            setInvestmentTotal(response.data.reduce((n, {value}) => n + value, 0));
-        })
+        const investementResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`);
+        setInvestments(investementResponse.data);
+        const newInvestmentTotal = investementResponse.data.reduce((n, {value}) => n + value, 0);
+        setInvestmentTotal(newInvestmentTotal);
+
+        setBreakdownTotal(newIncomeTotal-(newExpenseTotal+newInvestmentTotal));
     }
 
     return (
@@ -54,12 +54,6 @@ export const Home = () => {
         <h2 className="welcomeUser"> Welcome {username}!</h2>
         <h2 className="welcomeUser">Please enter your incomes, expenses, and investments:</h2>
         <UserInput
-        setIncomes={setIncomes}
-        setExpenses={setExpenses}
-        setInvestments={setInvestments}
-        setIncomeTotal={setIncomeTotal}
-        setExpenseTotal={setExpenseTotal}
-        setInvestmentTotal={setInvestmentTotal}
         refreshPage = {refreshPage}
         />
         <FinanceSummary
@@ -69,19 +63,14 @@ export const Home = () => {
         incomeTotal={incomeTotal}
         expenseTotal={expenseTotal}
         investmentTotal={investmentTotal}
-        setIncomes={setIncomes}
-        setExpenses={setExpenses}
-        setInvestments={setInvestments}
-        setIncomeTotal={setIncomeTotal}
-        setExpenseTotal={setExpenseTotal}
-        setInvestmentTotal={setInvestmentTotal}
+        breakdownTotal={breakdownTotal}
         refreshPage = {refreshPage}
         />
     </div>
     );
 }
 
-const UserInput = ({setIncomes, setExpenses, setInvestments, setIncomeTotal, setExpenseTotal, setInvestmentTotal, refreshPage}) => {
+const UserInput = ({refreshPage}) => {
     const [description, setDescription] = useState("");
     const [value, setValue] = useState("");
     const [financeType, setFinanceType] = useState("income");
@@ -130,7 +119,7 @@ const UserInput = ({setIncomes, setExpenses, setInvestments, setIncomeTotal, set
     );
 }
 
-const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTotal, investmentTotal, setIncomes, setExpenses, setInvestments, setIncomeTotal, setExpenseTotal, setInvestmentTotal, refreshPage}) => {
+const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTotal, investmentTotal, breakdownTotal, refreshPage}) => {
     const userID = window.localStorage.getItem("userID");
 
     const deleteItem = async (financeID) => {
@@ -207,7 +196,7 @@ const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTot
             <div className="breakdown finance-section">
                 <h3>Breakdown:</h3>
                 <h4>Total Incomes - (Total Expenses + Total Investments)</h4>
-                <h2>= TOTAL</h2>
+                <h2>= {breakdownTotal}</h2>
             </div>
 
         </div>
