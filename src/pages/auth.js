@@ -23,7 +23,7 @@ const Login = () => {
     const onSubmit = async (event) => {
         event.preventDefault();
         try{
-            const response = await axios.post("http://localhost:3001/api/login", {username, password});
+            const response = await axios.post("https://financialplanner-api.onrender.com/api/login", {username, password});
             
             if (response.data.token){
                 setCookies("access_token", response.data.token);
@@ -57,7 +57,7 @@ const Register = () => {
     const onSubmit = async (event) => {
         event.preventDefault();
         try{
-            const response = await axios.post("http://localhost:3001/api/register", {username, password});
+            const response = await axios.post("https://financialplanner-api.onrender.com/api/register", {username, password});
             if(response.data.message == "User registered successfully"){
                 alert("Registration completed! You may now login");
             }

@@ -15,19 +15,19 @@ export const Home = () => {
 
     const refreshPage = async () => {
         //section for incomes
-        const incomeResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/income`);
+        const incomeResponse = await axios.get(`https://financialplanner-api.onrender.com/api/userFinanceByType/${userID}/income`);
         setIncomes(incomeResponse.data);
         const newIncomeTotal = incomeResponse.data.reduce((n, {value}) => n + value, 0);
         setIncomeTotal(newIncomeTotal);
 
         //section for expenses
-        const expenseResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/expense`);
+        const expenseResponse = await axios.get(`https://financialplanner-api.onrender.com/api/userFinanceByType/${userID}/expense`);
         setExpenses(expenseResponse.data);
         const newExpenseTotal = expenseResponse.data.reduce((n, {value}) => n + value, 0);
         setExpenseTotal(newExpenseTotal);
 
         //section for investments
-        const investementResponse = await axios.get(`http://localhost:3001/api/userFinanceByType/${userID}/investment`);
+        const investementResponse = await axios.get(`https://financialplanner-api.onrender.com/api/userFinanceByType/${userID}/investment`);
         setInvestments(investementResponse.data);
         const newInvestmentTotal = investementResponse.data.reduce((n, {value}) => n + value, 0);
         setInvestmentTotal(newInvestmentTotal);
@@ -80,7 +80,7 @@ const UserInput = ({refreshPage}) => {
     const onSubmit = async (event) => {
         event.preventDefault();
         try{
-            await axios.post("http://localhost:3001/api", {userID, "finances": [{description, value, financeType}]});
+            await axios.post("https://financialplanner-api.onrender.com/api", {userID, "finances": [{description, value, financeType}]});
             //---------RE-RENDER STUFF--------
             refreshPage();
             
@@ -126,7 +126,7 @@ const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTot
 
     const deleteItem = async (financeID) => {
         try{
-            await axios.delete("http://localhost:3001/api/deleteFinance", {data: {userID, financeID}});
+            await axios.delete("https://financialplanner-api.onrender.com/api/deleteFinance", {data: {userID, financeID}});
             refreshPage();
 
         }
@@ -139,7 +139,7 @@ const FinanceSummary = ({incomes, expenses, investments, incomeTotal, expenseTot
         try{
             const newDescription = prompt("Enter new description: ");
             const newValue = prompt("Enter new value: ")
-            await axios.put("http://localhost:3001/api/updateFinance", {userID,financeID, "description": newDescription, "value": newValue});
+            await axios.put("https://financialplanner-api.onrender.com/api/updateFinance", {userID,financeID, "description": newDescription, "value": newValue});
 
            refreshPage();
         }
