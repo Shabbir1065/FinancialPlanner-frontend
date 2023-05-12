@@ -9,6 +9,7 @@ function App() {
   
   return (
     <div className="App">
+      <title>Financial Planner</title>
       <Router>
         <Navbar className="navBar"/>
         <Routes>
